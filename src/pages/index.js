@@ -1,11 +1,79 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
-
-const inter = Inter({ subsets: ['latin'] })
+import axios from 'axios';
+import AnimeCard from 'components/AnimeCard';
+import DogCard from 'components/DogCard';
+import Feed from 'components/Feed';
+import Head from 'next/head';
+import Image from 'next/image';
+import {useState, useEffect, useRef} from 'react';
 
 export default function Home() {
+
+  const [activeTab, setActiveTab] = useState('anime');
+  const [anime, setAnime] = useState([]);
+  const [dogFacts, setDogFacts] = useState([]);
+  const dogRef = useRef(null);
+  const animeRef = useRef(null)
+
+
+ 
+
+  useEffect(() => {
+   
+    
+   
+ 
+    const intervalId = setInterval(getDogs, Math.random() * 1500);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+   
+    
+   
+
+    const intervalId = setInterval(getAnime, Math.random() * 1500);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+
+  const getDogs = async() =>{
+
+    try{
+      const res = await axios.get("https://dog-api.kinduff.com/api/facts")
+      const fact = res.data.facts
+      setDogFacts(prevFacts => [...prevFacts, fact]);
+ 
+      
+    } catch(err){
+
+      console.log(err)
+    }
+    
+    
+  }
+
+  const getAnime = async ()=>{
+
+    try{
+      const res = await axios.get("https://animechan.vercel.app/api/random")
+
+      const data = res.data
+      setAnime(prevAnime => [...prevAnime, data])
+    } catch(err){
+
+      console.log(err)
+    }
+  }
+
+
+
+
+
+
+  
+
   return (
     <>
       <Head>
@@ -14,110 +82,29 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>src/pages/index.js</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
+      <main>
+        <div className='page-layout'>
+          <div className='sidebar'>
+            <button onClick={() => setActiveTab('anime')} className='btn-primary'>Anime</button>
+            <button onClick={() => setActiveTab('dogs')} className='btn-primary'>Dogs</button>
           </div>
-        </div>
+          <div >
+         
 
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
-            />
+
+            {activeTab === 'anime'
+          ? <Feed currentTab={activeTab} feedData={anime}/>
+          : <Feed currentTab={activeTab} feedData={dogFacts}/>}
+
+
+
+          
           </div>
-        </div>
 
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
         </div>
       </main>
     </>
   )
 }
+
+

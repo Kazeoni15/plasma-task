@@ -1,0 +1,18 @@
+Here is the short exercise. Please use react/next.js for the frontend. There is no backend in this exercise.
+
+1. [dog-api.kinduff.com/api/facts](https://dog-api.kinduff.com/api/facts). Ping this api and get a new dog fact every X seconds. 
+(X is a random second between 0-1.5).
+2. [animechan.vercel.app/api/random](https://animechan.vercel.app/api/random).
+Ping this api and get a new anime quote every X seconds. (X is a random second between 0-1.5).
+3. Create a very bare bones front end that has a sidebar on the left 30% of the screen and a feed on the right 70% of the screen. 
+The sidebar has two tabs “anime” and “dogs”.
+4. When you click on the “anime” tab, the feed on the right updates to show all the anime quotes that you get from the api with 
+new quotes showing up at the bottom of the feed. The feed should auto scroll if the user has scrolled all the way down in the feed, 
+but if the user scrolls up away from the latest message in the feed, the scroll position of the feed should persist. 
+(This behavior can be seen in a discord channel as well)
+5. When you click on the “dogs” tab, the feed will show the dog fact and similar behavior as specified in 4.
+6. Bonus task: When you switch between “anime” or “dogs” tab, the scroll position of the feed should persist, 
+even if there were new messages that showed up while the user is not actively looking at one of the feeds. 
+So if I was looking at the latest message A in “anime” feed, then I switch over to “dogs” tab and meanwhile the “anime” feed has 5 new messages. 
+When I switch over to “anime” feed, the scroll position of the feed should still show message A at the bottom of the page. 
+I will have to scroll down to see the 5 new messages.
